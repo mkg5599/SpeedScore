@@ -6,23 +6,23 @@ import { expect } from "@playwright/test";
  * *************************************************************************************/
 
 function getRandomDate() {
-    const start = new Date(2000, 0, 1).getTime();
-    const end = new Date().getTime();
-    const randomDate = new Date(start + Math.random() * (end - start));
-    const year = randomDate.getFullYear();
-    const month = String(randomDate.getMonth() + 1).padStart(2, "0");
-    const day = String(randomDate.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
+  const start = new Date(2000, 0, 1).getTime();
+  const end = new Date().getTime();
+  const randomDate = new Date(start + Math.random() * (end - start));
+  const year = randomDate.getFullYear();
+  const month = String(randomDate.getMonth() + 1).padStart(2, "0");
+  const day = String(randomDate.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
 
 function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function getRandomFloat(min, max) {
-    return parseFloat((Math.random() * (max - min) + min).toFixed(2));
+  return parseFloat((Math.random() * (max - min) + min).toFixed(2));
 }
 
 /****************************************************************************************
@@ -34,46 +34,43 @@ function getRandomFloat(min, max) {
  * This function initializes a new user account with no rounds for the specified user.
  ****************************************************************************************/
 export async function initTestUser(
-    page,
-    email = "testuser@gmail.com",
-    password = "TestUser123"
+  page,
+  email = "testuser@gmail.com",
+  password = "TestUser123"
 ) {
-    await page.evaluate(
-        ({ email, password }) => {
-            const testUser = {
-                accountInfo: {
-                    email: email,
-                    password: password,
-                    securityQuestion: "What is your favorite color?",
-                    securityAnswer: "Orange",
-                },
-                identityInfo: {
-                    displayName: "Test User",
-                    profilePic: "images/DefaultProfilePic.jpg",
-                },
-                speedgolfInfo: {
-                    bio: "",
-                    clubs: {},
-                    clubComments: "",
-                    firstRound: "",
-                    homeCourse: "",
-                    personalBest: {
-                        strokes: 0,
-                        minutes: 0,
-                        seconds: 0,
-                        course: "",
-                    },
-                },
-                roundCount: 0,
-                rounds: [],
-            };
-            localStorage.setItem(
-                "testuser@gmail.com",
-                JSON.stringify(testUser)
-            );
+  await page.evaluate(
+    ({ email, password }) => {
+      const testUser = {
+        accountInfo: {
+          email: email,
+          password: password,
+          securityQuestion: "What is your favorite color?",
+          securityAnswer: "Orange",
         },
-        { email, password }
-    );
+        identityInfo: {
+          displayName: "Test User",
+          profilePic: "images/DefaultProfilePic.jpg",
+        },
+        speedgolfInfo: {
+          bio: "",
+          clubs: {},
+          clubComments: "",
+          firstRound: "",
+          homeCourse: "",
+          personalBest: {
+            strokes: 0,
+            minutes: 0,
+            seconds: 0,
+            course: "",
+          },
+        },
+        roundCount: 0,
+        rounds: [],
+      };
+      localStorage.setItem("testuser@gmail.com", JSON.stringify(testUser));
+    },
+    { email, password }
+  );
 }
 
 /****************************************************************************************
@@ -86,15 +83,15 @@ export async function initTestUser(
  * in user.
  ****************************************************************************************/
 export async function login(
-    page,
-    email = "testuser@gmail.com",
-    password = "TestUser123"
+  page,
+  email = "testuser@gmail.com",
+  password = "TestUser123"
 ) {
-    await expect(page.isVisible("#loginPage")).resolves.toBe(true);
-    await page.fill("#email", email);
-    await page.fill("#password", password);
-    await page.click("#loginBtn");
-    await expect(page.isVisible("#feedModeTab")).resolves.toBe(true);
+  await expect(page.isVisible("#loginPage")).resolves.toBe(true);
+  await page.fill("#email", email);
+  await page.fill("#password", password);
+  await page.click("#loginBtn");
+  await expect(page.isVisible("#feedModeTab")).resolves.toBe(true);
 }
 
 /****************************************************************************************
@@ -107,31 +104,31 @@ export async function login(
  * Additional checks can be done after this function to verify expected behavior.
  * *************************************************************************************/
 export async function addRound(page, round) {
-    await expect(page.isVisible("#roundsModeActionBtn")).resolves.toBe(true);
-    await page.click("#roundsModeActionBtn");
-    await expect(page.isVisible("#logRoundForm")).resolves.toBe(true);
-    await page.fill("#roundDate", round.date);
-    await page.fill("#roundCourse", round.course);
-    await page.selectOption(
-        "#roundType",
-        round.hasOwnProperty("type") ? round.type : "practice"
+  await expect(page.isVisible("#roundsModeActionBtn")).resolves.toBe(true);
+  await page.click("#roundsModeActionBtn");
+  await expect(page.isVisible("#logRoundForm")).resolves.toBe(true);
+  await page.fill("#roundDate", round.date);
+  await page.fill("#roundCourse", round.course);
+  await page.selectOption(
+    "#roundType",
+    round.hasOwnProperty("type") ? round.type : "practice"
+  );
+  await page.selectOption(
+    "#roundHoles",
+    round.hasOwnProperty("holes") ? round.holes : "18"
+  );
+  await page.fill("#roundStrokes", round.strokes);
+  await page.fill("#roundMinutes", round.minutes);
+  await page.fill("#roundSeconds", round.seconds);
+  const distElt = await page.$("#roundDistance");
+  if (distElt !== null) {
+    await page.fill(
+      "#roundDistance",
+      round.hasOwnProperty("distance") ? round.distance : ""
     );
-    await page.selectOption(
-        "#roundHoles",
-        round.hasOwnProperty("holes") ? round.holes : "18"
-    );
-    await page.fill("#roundStrokes", round.strokes);
-    await page.fill("#roundMinutes", round.minutes);
-    await page.fill("#roundSeconds", round.seconds);
-    const distElt = await page.$("#roundDistance");
-    if (distElt !== null) {
-        await page.fill(
-            "#roundDistance",
-            round.hasOwnProperty("distance") ? round.distance : ""
-        );
-    }
-    await page.fill("#roundNotes", round.notes);
-    await page.click("#roundFormSubmitBtn");
+  }
+  await page.fill("#roundNotes", round.notes);
+  await page.click("#roundFormSubmitBtn");
 }
 
 /****************************************************************************************
@@ -144,21 +141,21 @@ export async function addRound(page, round) {
  * an array of the rounds that were added.
  * *************************************************************************************/
 export async function addRounds(page, roundCount) {
-    const rounds = [];
-    for (let i = 0; i < roundCount; i++) {
-        const round = {
-            date: getRandomDate(),
-            course: "Test Course " + i,
-            type: "practice",
-            holes: "18",
-            strokes: getRandomInt(65, 100).toString(), // Random strokes between 65 and 100
-            minutes: getRandomInt(40, 85).toString(), // Random minutes between 40 and 85
-            seconds: getRandomInt(0, 59).toString(), // Random seconds between 0 and 59
-            distance: getRandomFloat(4, 8).toString(), // Need random distance between 4 and 8
-            notes: "Test Round " + i,
-        };
-        rounds.push(round);
-        await addRound(page, round);
-    }
-    return rounds;
+  const rounds = [];
+  for (let i = 0; i < roundCount; i++) {
+    const round = {
+      date: getRandomDate(),
+      course: "Test Course " + i,
+      type: "practice",
+      holes: "18",
+      strokes: getRandomInt(65, 100).toString(), // Random strokes between 65 and 100
+      minutes: getRandomInt(40, 85).toString(), // Random minutes between 40 and 85
+      seconds: getRandomInt(0, 59).toString(), // Random seconds between 0 and 59
+      distance: getRandomFloat(4, 8).toString(), // Need random distance between 4 and 8
+      notes: "Test Round " + i,
+    };
+    rounds.push(round);
+    await addRound(page, round);
+  }
+  return rounds;
 }
