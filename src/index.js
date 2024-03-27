@@ -1,13 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./components/example";
+import RoundsListing from "./screens/RoundsListing";
 import reportWebVitals from "./reportWebVitals";
+import RoundsContextProvider from "./context/RoundsContext";
 
 const root = ReactDOM.createRoot(document.getElementById("roundsModule"));
 root.render(
   <React.StrictMode>
-    <App />
+    <RoundsContextProvider>
+      <RoundsListing />
+    </RoundsContextProvider>
   </React.StrictMode>
 );
 

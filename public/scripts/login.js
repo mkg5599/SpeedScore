@@ -120,7 +120,7 @@ loginForm.addEventListener("submit", function (e) {
     validAccount(GlobalEmailField.value, GlobalPasswordField.value);
   if (authenticated) {
     //Log user in
-    login(GlobalEmailField?.value);
+    login(GlobalEmailField.value);
     return;
   }
   //If here, at least one field is invalid

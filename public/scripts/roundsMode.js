@@ -206,15 +206,15 @@ function writeRoundToTable(row, rIndex) {
  *************************************************************************/
 function addRoundToTable(roundIndex) {
   const roundId = GlobalUserData.rounds[roundIndex].roundNum;
-  if (GlobalRoundsTable?.rows[1].innerHTML.includes("colspan")) {
+  if (GlobalRoundsTable.rows[1].innerHTML.includes("colspan")) {
     //empty table! Remove this row before adding new one
     GlobalRoundsTable.deleteRow(1);
   }
   //Write new row containing new round to table body
-  const thisRoundBody = GlobalRoundsTable?.querySelector("tbody");
-  const thisRound = thisRoundBody?.insertRow(0); //insert as first table row
+  const thisRoundBody = GlobalRoundsTable.querySelector("tbody");
+  const thisRound = thisRoundBody.insertRow(0); //insert as first table row
   thisRound.id = "r-" + roundId; //set unique id of  row so we can access it later
-  thisRound?.classList.add("row-item"); //needed for sorting.
+  thisRound.classList.add("row-item"); //needed for sorting.
   writeRoundToTable(thisRound, roundIndex);
 }
 
@@ -242,13 +242,13 @@ function updateRoundInTable(rowIndex) {
  * @global GlobalRoundsDataCaption: The caption for the "Rounds" table
  *************************************************************************/
 function populateRoundsTable() {
-  for (let i = 0; i < GlobalUserData?.rounds.length; ++i) {
+  for (let i = 0; i < GlobalUserData.rounds.length; ++i) {
     addRoundToTable(i);
   }
-  if (GlobalUserData?.rounds.length == 1) {
-    GlobalRoundsTableCaption?.textContent = "Table displaying 1 speedgolf round";
+  if (GlobalUserData.rounds.length == 1) {
+    GlobalRoundsTableCaption.textContent = "Table displaying 1 speedgolf round";
   } else {
-    GlobalRoundsTableCaption?.textContent =
+    GlobalRoundsTableCaption.textContent =
       "Table displaying " + GlobalUserData.rounds.length + " speedgolf rounds";
   }
 }
