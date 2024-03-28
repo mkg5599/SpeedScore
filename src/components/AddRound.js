@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from "react";
 import "../index.css";
 import { useRoundsContext } from "../context/RoundsContext";
+import moment from "moment";
 
-function ViewEditRound({
-  currentViewEditId,
-  setCurrentViewEditId,
-  setUpdatedRound,
-}) {
+function AddRound({ setNewRound, setAddedRound }) {
   const { state, dispatch } = useRoundsContext();
-  const [currentRoundData, setCurrentRoundData] = useState(null);
+  const [currentRoundData, setCurrentRoundData] = useState({
+    date: moment().format("YYYY-MM-DD"),
+    course: "",
+    type: "practice",
+    holes: "9",
+    strokes: "10",
+    minutes: "10",
+    seconds: "10",
+    notes: "",
+    roundNum: 0,
+    SGS: "",
+  });
   const [errors, setErrors] = useState({});
-
-  useEffect(() => {
-    let currentRound = state?.rounds?.filter(
-      (x) => x.roundNum == currentViewEditId
-    );
-    console.log("current round", currentRound, state);
-    setCurrentRoundData(currentRound[0]);
-  }, []);
 
   useEffect(() => {}, [currentRoundData, errors]);
 
@@ -37,7 +37,6 @@ function ViewEditRound({
       behavior: "smooth",
     });
   };
-
   const validateData = (tempData) => {
     console.log("tempData", tempData);
     let formErrors = {};
@@ -66,6 +65,7 @@ function ViewEditRound({
     }
 
     console.log("form errors", formErrors);
+
     if (Object?.keys(formErrors)?.length > 0) {
       setErrors(formErrors);
       scrollToError();
@@ -78,20 +78,16 @@ function ViewEditRound({
     e.preventDefault();
     setErrors({});
     if (validateData(currentRoundData)) {
-      const updatedDataRounds = state?.rounds?.map((item) => {
-        if (currentRoundData.roundNum === item?.roundNum) {
-          currentRoundData["SGS"] =
-            parseInt(currentRoundData?.minutes) +
-            parseInt(currentRoundData?.strokes) +
-            ":" +
-            currentRoundData?.seconds;
-          return currentRoundData;
-        }
-        return item;
-      });
-      await dispatch({ type: "UPDATE_ROUND", payload: updatedDataRounds });
-      setUpdatedRound(true);
-      setCurrentViewEditId(0);
+      currentRoundData["roundNum"] = parseInt(state?.rounds?.length) + 1;
+      currentRoundData["SGS"] =
+        parseInt(currentRoundData?.minutes) +
+        parseInt(currentRoundData?.strokes) +
+        ":" +
+        currentRoundData?.seconds;
+      console.log("edfefewf", currentRoundData, state, state?.roundCount);
+      await dispatch({ type: "ADD_ROUND", payload: currentRoundData });
+      setAddedRound(true);
+      setNewRound(false);
     }
   };
   return (
@@ -155,8 +151,9 @@ function ViewEditRound({
           </p>
         </>
       ) : null}
+
       <h1 id="roundFormHeader" className="mode-page-header">
-        Edit Round
+        Add Round
       </h1>
       <form id="logRoundForm" className="centered" noValidate>
         <div className="mb-3">
@@ -267,7 +264,7 @@ function ViewEditRound({
               size="2"
               aria-describedby="roundTimeDescr"
               min="0"
-              max="60"
+              max="59"
               value={currentRoundData?.seconds}
               //onChange="changeSeconds()"
               onChange={(e) => setData("seconds", e.target.value)}
@@ -325,13 +322,13 @@ function ViewEditRound({
             onClick={(e) => submitData(e)}
           >
             <span id="roundFormSubmitBtnIcon" className="fa fa-save"></span>
-            <span id="roundFormSubmitBtnLabel">&nbsp;Edit Round</span>
+            <span id="roundFormSubmitBtnLabel">&nbsp;Add Round</span>
           </button>
           <button
             id="roundsModeLogCancelBtn"
             className="mode-page-btn-cancel action-dialog cancel-button"
             type="button"
-            onClick={() => setCurrentViewEditId(0)}
+            onClick={() => setNewRound(false)}
           >
             <span className="fa fa-window-close"></span>&nbsp;Cancel
           </button>
@@ -341,4 +338,4 @@ function ViewEditRound({
   );
 }
 
-export default ViewEditRound;
+export default AddRound;

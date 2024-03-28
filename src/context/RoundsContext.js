@@ -29,6 +29,7 @@ const RoundsContextProvider = ({ children }) => {
     const userData = {
       ...JSON.parse(localStorage.getItem("user@ss.org")),
       rounds: state.rounds,
+      roundCount: parseInt(state.rounds?.length) + 1,
     };
     localStorage.setItem("user@ss.org", JSON.stringify(userData));
   }, [state.rounds]);
