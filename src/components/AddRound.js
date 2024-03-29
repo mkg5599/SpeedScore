@@ -16,19 +16,21 @@ function AddRound({ setNewRound, setAddedRound }) {
     notes: "",
     roundNum: 0,
     SGS: "",
+    distance: "",
   });
   const [errors, setErrors] = useState({});
+  const [distanceUnitKms, setDistanceUnitKms] = useState(false);
 
   useEffect(() => {}, [currentRoundData, errors]);
 
-  const setData = (key, value) => {
+  const setData = async (key, value) => {
     console.log("hhdjs", key, value);
     let currentData = {
       ...currentRoundData,
       [key]: value,
     };
     console.log(currentData);
-    setCurrentRoundData(currentData);
+    await setCurrentRoundData(currentData);
   };
 
   const scrollToError = () => {
@@ -38,7 +40,7 @@ function AddRound({ setNewRound, setAddedRound }) {
     });
   };
   const validateData = (tempData) => {
-    console.log("tempData", tempData);
+    console.log("tempData", tempData, distanceUnitKms);
     let formErrors = {};
     if (tempData.course?.length < 1 || tempData.course?.length > 50) {
       formErrors.course = true;
@@ -60,6 +62,12 @@ function AddRound({ setNewRound, setAddedRound }) {
       tempData?.seconds == ""
     ) {
       formErrors.seconds = true;
+    } else if (
+      tempData?.distance == "" ||
+      parseFloat(tempData.distance) < 0.01 ||
+      parseFloat(tempData.distance) > (distanceUnitKms ? 100 : 62)
+    ) {
+      formErrors.distance = true;
     } else if (tempData.notes > 500) {
       formErrors.strokes = true;
     }
@@ -76,7 +84,7 @@ function AddRound({ setNewRound, setAddedRound }) {
 
   const submitData = async (e) => {
     e.preventDefault();
-    setErrors({});
+    await setErrors({});
     if (validateData(currentRoundData)) {
       currentRoundData["roundNum"] = parseInt(state?.rounds?.length) + 1;
       currentRoundData["SGS"] =
@@ -84,11 +92,25 @@ function AddRound({ setNewRound, setAddedRound }) {
         parseInt(currentRoundData?.strokes) +
         ":" +
         currentRoundData?.seconds;
+      currentRoundData["distance"] = distanceUnitKms
+        ? parseFloat(currentRoundData.distance) * 3280.84
+        : parseFloat(currentRoundData.distance) * 5280;
       console.log("edfefewf", currentRoundData, state, state?.roundCount);
       await dispatch({ type: "ADD_ROUND", payload: currentRoundData });
       setAddedRound(true);
       setNewRound(false);
     }
+  };
+
+  const distanceConverter = async (value) => {
+    if (value != "") {
+      if (distanceUnitKms) {
+        await setData("distance", parseFloat(value) * 0.62);
+        return;
+      }
+      await setData("distance", parseFloat(value) * 1.61290323);
+    }
+    return;
   };
   return (
     <div
@@ -139,6 +161,16 @@ function AddRound({ setNewRound, setAddedRound }) {
                 className="alert-link"
               >
                 Please enter seconds as an integer value beween 0 and 59
+                <br />
+              </a>
+            ) : null}
+            {errors?.distance ? (
+              <a
+                id="roundDistanceError"
+                href="#roundDistance"
+                className="alert-link"
+              >
+                Please enter a distance value beween 0.10 and 62 miles (100 km)
                 <br />
               </a>
             ) : null}
@@ -294,6 +326,66 @@ function AddRound({ setNewRound, setAddedRound }) {
               disabled
             />
           </label>
+        </div>
+        <div className="mb-3">
+          <label htmlFor="roundDistance">
+            Distance:
+            <br />
+            <input
+              id="roundDistance"
+              className="form-control centered"
+              type="number"
+              min="0"
+              max="100"
+              step="0.01"
+              value={parseFloat(currentRoundData?.distance).toFixed(2)}
+              onChange={(e) => setData("distance", e.target.value)}
+              //style={{ width: "100px" }}
+            />
+          </label>
+        </div>
+        <div className="mb-3">
+          <div
+            style={{
+              flexDirection: "row",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <label
+              className="form-check-label"
+              htmlFor="flexSwitchCheckDefault"
+            >
+              Miles
+            </label>
+            <div
+              className="form-check form-switch"
+              style={{ marginLeft: "5px" }}
+            >
+              <input
+                class="form-check-input"
+                type="checkbox"
+                role="switch"
+                id="flexSwitchCheckDefault"
+                checked={distanceUnitKms}
+                onChange={() => {
+                  setDistanceUnitKms((prev) => !prev);
+                  distanceConverter(currentRoundData?.distance);
+                }}
+              />
+            </div>
+            <label
+              className="form-check-label"
+              htmlFor="flexSwitchCheckDefault"
+            >
+              Kilometers
+            </label>
+          </div>
+
+          <div id="roundDistanceDescr" className="form-text">
+            Enter a distance value (in miles or km) between 0.01 and 62 miles
+            (100 km)
+          </div>
         </div>
         <div className="mb-3">
           <label htmlFor="roundNotes">
