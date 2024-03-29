@@ -23,3 +23,7 @@ In this task I implemented react into the application by creating the react app.
 # Task 3 - Add Distance Field to a Round
 
 Defined a distance filed in Add and Edit pages of Rounds. Used Miles as a primary unit and it is then converted to kms based on the conversion function. Before saving the data, the distance is converted to foot unit and when accessing it in edit, it is converted to miles in useEffect. Added validation as per the requirements to display the error message.
+
+# Task 4 - Support Round Sorting
+
+Implemented responsive sort functionality using array-sort library and also added distance field to the listing page.
