@@ -19,3 +19,7 @@ In this task, I reviewed the Playwright Test and installed it following the inst
 # Task 2 - Reimplement "Rounds" mode in React
 
 In this task I implemented react into the application by creating the react app. Next, I developed the Rounds module (Includes Rounds Listing, Adding rounds, View/Edit rounds) in react using the html that was previously defined. Also I implemented validation on forms when adding and editing the rounds. I defined the architecture of src folder into components (which are inside pages like Add Round and View/Edit Rounds), context (A context files for every module), reducer (A reducer files for every module), screens (Listing pages of main screen) for better developer experience. All these are defined to a div element in index.js which is used in index.html file that is present in public folder.
+
+# Task 3 - Add Distance Field to a Round
+
+Defined a distance filed in Add and Edit pages of Rounds. Used Miles as a primary unit and it is then converted to kms based on the conversion function. Before saving the data, the distance is converted to foot unit and when accessing it in edit, it is converted to miles in useEffect. Added validation as per the requirements to display the error message.
