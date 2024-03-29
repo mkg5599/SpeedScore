@@ -3,18 +3,37 @@ import { useRoundsContext } from "../context/RoundsContext";
 import ViewEditRound from "../components/ViewEditRound";
 import "../index.css";
 import AddRound from "../components/AddRound";
+var arraySort = require("array-sort");
 
 function RoundsListing() {
   const { state, dispatch } = useRoundsContext();
+  const [roundsData, setRoundsData] = useState();
   const [currentViewEditId, setCurrentViewEditId] = useState(0);
   const [newRound, setNewRound] = useState(false);
   const [updatedRound, setUpdatedRound] = useState(false);
   const [addedRound, setAddedRound] = useState(false);
+  const [currentSortKey, setCurrentSortKey] = useState({});
 
   console.log("rounds listing page", state);
+
   useEffect(() => {
-    console.log("Inside Use Effect at line 10", currentViewEditId);
-  }, [currentViewEditId]);
+    setRoundsData(state?.rounds);
+  }, [currentViewEditId, state?.rounds]);
+
+  useEffect(() => {
+    console.log("DDDD", roundsData);
+  }, [roundsData]);
+
+  const sortData = async (key) => {
+    currentSortKey[key] = currentSortKey[key] == "asc" ? "desc" : "asc";
+    setCurrentSortKey({ ...currentSortKey });
+    let sortedData = await arraySort(roundsData, key);
+    if (currentSortKey[key] == "asc") {
+      await setRoundsData([...sortedData]);
+    } else if (currentSortKey[key] == "desc") {
+      await setRoundsData([...sortedData.reverse()]);
+    }
+  };
   return (
     <>
       {currentViewEditId && currentViewEditId > 0 ? (
@@ -56,7 +75,7 @@ function RoundsListing() {
               ) : null}
               <table id="roundsTable" className="table table-hover">
                 <caption id="roundsTableCaption" aria-live="polite">
-                  {"Total " + `${state.rounds?.length}` + " rounds"}
+                  {"Total " + `${roundsData?.length}` + " rounds"}
                 </caption>
                 <thead className="table-light">
                   <tr>
@@ -69,8 +88,17 @@ function RoundsListing() {
                       <button
                         className="btn bg-transparent table-sort-btn"
                         aria-label="Sort ascending by date"
+                        onClick={() => sortData("date")}
                       >
-                        <span className="fas fa-sort sort-icon"></span>
+                        <span
+                          className={
+                            currentSortKey["date"] == "asc"
+                              ? "fas fa-sort-amount-down-alt"
+                              : currentSortKey["date"] == "desc"
+                              ? "fas fa-sort-amount-down"
+                              : "fas fa-sort"
+                          }
+                        ></span>
                       </button>
                       Date
                     </th>
@@ -83,8 +111,17 @@ function RoundsListing() {
                       <button
                         className="btn bg-transparent table-sort-btn"
                         aria-label="Sort ascending by course"
+                        onClick={() => sortData("course")}
                       >
-                        <span className="fas fa-sort sort-icon"></span>
+                        <span
+                          className={
+                            currentSortKey["course"] == "asc"
+                              ? "fas fa-sort-amount-down-alt"
+                              : currentSortKey["course"] == "desc"
+                              ? "fas fa-sort-amount-down"
+                              : "fas fa-sort"
+                          }
+                        ></span>
                       </button>
                       Course
                     </th>
@@ -97,10 +134,42 @@ function RoundsListing() {
                       <button
                         className="btn bg-transparent table-sort-btn"
                         aria-label="Sort ascending by score"
+                        onClick={() => sortData("SGS")}
                       >
-                        <span className="fas fa-sort sort-icon"></span>
+                        <span
+                          className={
+                            currentSortKey["SGS"] == "asc"
+                              ? "fas fa-sort-amount-down-alt"
+                              : currentSortKey["SGS"] == "desc"
+                              ? "fas fa-sort-amount-down"
+                              : "fas fa-sort"
+                          }
+                        ></span>
                       </button>
                       Score
+                    </th>
+                    <th
+                      scope="col"
+                      role="columnheader"
+                      className="sortable-header cell-align-middle"
+                      aria-sort="none"
+                    >
+                      <button
+                        className="btn bg-transparent table-sort-btn"
+                        aria-label="Sort ascending by score"
+                        onClick={() => sortData("distance")}
+                      >
+                        <span
+                          className={
+                            currentSortKey["distance"] == "asc"
+                              ? "fas fa-sort-amount-down-alt"
+                              : currentSortKey["distance"] == "desc"
+                              ? "fas fa-sort-amount-down"
+                              : "fas fa-sort"
+                          }
+                        ></span>
+                      </button>
+                      Distance
                     </th>
                     <th scope="col" className="cell-align-middle">
                       View/Edit...
@@ -111,8 +180,8 @@ function RoundsListing() {
                   </tr>
                 </thead>
                 <tbody>
-                  {state?.rounds.length > 0 &&
-                    state?.rounds?.map((item) => (
+                  {roundsData?.length > 0 &&
+                    roundsData?.map((item) => (
                       <tr key={item.roundNum}>
                         <td>{item.date}</td>
                         <td>{item.course}</td>
@@ -125,6 +194,11 @@ function RoundsListing() {
                             ":" +
                             item.seconds +
                             ")"}
+                        </td>
+                        <td>
+                          {item.distance && item.distance != ""
+                            ? parseFloat(item.distance).toFixed(2)
+                            : 0}
                         </td>
                         <td>
                           <button
