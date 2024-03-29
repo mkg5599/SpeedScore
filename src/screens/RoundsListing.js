@@ -14,7 +14,7 @@ function RoundsListing() {
   const [addedRound, setAddedRound] = useState(false);
   const [currentSortKey, setCurrentSortKey] = useState({});
   const [deleteId, setDeleteId] = useState(0);
-
+  const [searchValue, setSearchValue] = useState("");
   console.log("rounds listing page", state);
 
   useEffect(() => {
@@ -24,6 +24,11 @@ function RoundsListing() {
   useEffect(() => {
     console.log("DDDD", roundsData);
   }, [roundsData]);
+
+  useEffect(() => {
+    let tempData = searchAllData(searchValue);
+    if (tempData && tempData?.length > 0) setRoundsData([...tempData]);
+  }, [searchValue]);
 
   const sortData = async (key) => {
     currentSortKey[key] = currentSortKey[key] == "asc" ? "desc" : "asc";
@@ -41,6 +46,18 @@ function RoundsListing() {
     await setRoundsData([...tempData]);
     dispatch({ type: "SET_ROUNDS", payload: tempData });
   };
+
+  const searchAllData = (query) => {
+    const searchTerm = query.toLowerCase();
+    const results = state?.rounds?.filter((item) => {
+      return Object.values(item).some(
+        (value) =>
+          typeof value === "string" && value.toLowerCase().includes(searchTerm)
+      );
+    });
+    return results;
+  };
+
   return (
     <>
       {currentViewEditId && currentViewEditId > 0 ? (
@@ -80,6 +97,28 @@ function RoundsListing() {
                   </button>
                 </div>
               ) : null}
+              <div
+                className="mb-3"
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  margin: "1%",
+                }}
+              >
+                <label htmlFor="searchBox" style={{ alignSelf: "center" }}>
+                  Search/Filter:
+                </label>
+                <input
+                  id="searchInputRounds"
+                  className="form-control centered"
+                  type="text"
+                  size="6"
+                  value={searchValue}
+                  onChange={(e) => setSearchValue(e.target.value)}
+                  style={{ maxWidth: "25%", marginLeft: "2%" }}
+                />
+              </div>
               <table id="roundsTable" className="table table-hover">
                 <caption id="roundsTableCaption" aria-live="polite">
                   {"Total " + `${roundsData?.length}` + " rounds"}
