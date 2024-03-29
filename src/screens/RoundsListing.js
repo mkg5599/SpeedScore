@@ -13,6 +13,7 @@ function RoundsListing() {
   const [updatedRound, setUpdatedRound] = useState(false);
   const [addedRound, setAddedRound] = useState(false);
   const [currentSortKey, setCurrentSortKey] = useState({});
+  const [deleteId, setDeleteId] = useState(0);
 
   console.log("rounds listing page", state);
 
@@ -33,6 +34,12 @@ function RoundsListing() {
     } else if (currentSortKey[key] == "desc") {
       await setRoundsData([...sortedData.reverse()]);
     }
+  };
+
+  const deleteRound = async () => {
+    const tempData = roundsData.filter((x) => x.roundNum != deleteId);
+    await setRoundsData([...tempData]);
+    dispatch({ type: "SET_ROUNDS", payload: tempData });
   };
   return (
     <>
@@ -210,7 +217,12 @@ function RoundsListing() {
                           </button>
                         </td>
                         <td>
-                          <button aria-label="Delete Round">
+                          <button
+                            aria-label="Delete Round"
+                            data-bs-toggle="modal"
+                            data-bs-target="#exampleModal"
+                            onClick={() => setDeleteId(item.roundNum)}
+                          >
                             <span className="fas fa-trash"></span>
                           </button>
                         </td>
@@ -230,6 +242,42 @@ function RoundsListing() {
                 ></span>
                 New Round
               </button>
+
+              <div class="modal" tabindex="-1" id="exampleModal">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Delete Round?</h5>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div class="modal-body">
+                      <p>Do you really want to delete that round?</p>
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                      >
+                        No, Cancel
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-primary"
+                        data-bs-dismiss="modal"
+                        onClick={() => deleteRound()}
+                      >
+                        Yes, Delete Round
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           ) : (
             <AddRound setNewRound={setNewRound} setAddedRound={setAddedRound} />
