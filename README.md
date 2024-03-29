@@ -27,3 +27,7 @@ Defined a distance filed in Add and Edit pages of Rounds. Used Miles as a primar
 # Task 4 - Support Round Sorting
 
 Implemented responsive sort functionality using array-sort library and also added distance field to the listing page.
+
+# Task 5 - Delete Functionality
+
+Used modal for delete functionality and updated the localstorage in parallel using reducer.
