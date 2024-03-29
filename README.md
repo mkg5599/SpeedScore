@@ -31,3 +31,7 @@ Implemented responsive sort functionality using array-sort library and also adde
 # Task 5 - Delete Functionality
 
 Used modal for delete functionality and updated the localstorage in parallel using reducer.
+
+# Task 6 - Search Functionality
+
+Used string matching on all values of rounds object to filter the data based on search key.
