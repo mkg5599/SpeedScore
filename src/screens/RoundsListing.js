@@ -56,7 +56,7 @@ function RoundsListing() {
               ) : null}
               <table id="roundsTable" className="table table-hover">
                 <caption id="roundsTableCaption" aria-live="polite">
-                  Rounds Table
+                  {"Total " + `${state.rounds?.length}` + " rounds"}
                 </caption>
                 <thead className="table-light">
                   <tr>
