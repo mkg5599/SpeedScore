@@ -24,12 +24,10 @@ function AddRound({ setNewRound, setAddedRound }) {
   useEffect(() => {}, [currentRoundData, errors]);
 
   const setData = async (key, value) => {
-    console.log("hhdjs", key, value);
     let currentData = {
       ...currentRoundData,
       [key]: value,
     };
-    console.log(currentData);
     await setCurrentRoundData(currentData);
   };
 
@@ -40,7 +38,6 @@ function AddRound({ setNewRound, setAddedRound }) {
     });
   };
   const validateData = (tempData) => {
-    console.log("tempData", tempData, distanceUnitKms);
     let formErrors = {};
     if (tempData.course?.length < 1 || tempData.course?.length > 50) {
       formErrors.course = true;
@@ -71,9 +68,6 @@ function AddRound({ setNewRound, setAddedRound }) {
     } else if (tempData.notes > 500) {
       formErrors.strokes = true;
     }
-
-    console.log("form errors", formErrors);
-
     if (Object?.keys(formErrors)?.length > 0) {
       setErrors(formErrors);
       scrollToError();
@@ -95,7 +89,6 @@ function AddRound({ setNewRound, setAddedRound }) {
       currentRoundData["distance"] = distanceUnitKms
         ? parseFloat(currentRoundData.distance) * 3280.84
         : parseFloat(currentRoundData.distance) * 5280;
-      console.log("edfefewf", currentRoundData, state, state?.roundCount);
       await dispatch({ type: "ADD_ROUND", payload: currentRoundData });
       setAddedRound(true);
       setNewRound(false);

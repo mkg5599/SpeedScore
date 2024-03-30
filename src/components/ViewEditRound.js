@@ -26,12 +26,10 @@ function ViewEditRound({
   useEffect(() => {}, [currentRoundData, errors]);
 
   const setData = (key, value) => {
-    console.log("hhdjs", key, value);
     let currentData = {
       ...currentRoundData,
       [key]: value,
     };
-    console.log(currentData);
     setCurrentRoundData(currentData);
   };
 
@@ -43,7 +41,6 @@ function ViewEditRound({
   };
 
   const validateData = async (tempData) => {
-    console.log("tempData", tempData, distanceUnitKms);
     let formErrors = {};
     if (tempData.course?.length < 1 || tempData.course?.length > 50) {
       formErrors.course = true;
@@ -74,8 +71,6 @@ function ViewEditRound({
     } else if (tempData.notes > 500) {
       formErrors.strokes = true;
     }
-
-    console.log("form errors", formErrors);
     if (Object?.keys(formErrors)?.length > 0) {
       setErrors(formErrors);
       scrollToError();
@@ -87,7 +82,6 @@ function ViewEditRound({
   const submitData = async (e) => {
     e.preventDefault();
     setErrors({});
-    console.log("cur", currentRoundData);
     let tmp = await validateData(currentRoundData);
     if (tmp) {
       currentRoundData["SGS"] =

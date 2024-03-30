@@ -1,5 +1,4 @@
 const roundsReducer = (state, action) => {
-  console.log("Reducer file", state, action);
   switch (action.type) {
     case "SET_ROUNDS":
       return {

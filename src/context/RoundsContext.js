@@ -14,10 +14,8 @@ const RoundsContextProvider = ({ children }) => {
 
   useEffect(() => {
     const savedUserData = localStorage.getItem("user@ss.org");
-    console.log("Line 17 RC", savedUserData);
     if (savedUserData) {
       const userData = JSON.parse(savedUserData);
-      console.log("Line 20 RC", userData);
       if (userData?.rounds && userData?.rounds?.length > 0) {
         dispatch({ type: "SET_ROUNDS", payload: userData.rounds });
       }
@@ -25,7 +23,6 @@ const RoundsContextProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    console.log("line 27", state.rounds);
     const userData = {
       ...JSON.parse(localStorage.getItem("user@ss.org")),
       rounds: state.rounds,

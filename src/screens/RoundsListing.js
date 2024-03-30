@@ -15,15 +15,12 @@ function RoundsListing() {
   const [currentSortKey, setCurrentSortKey] = useState({});
   const [deleteId, setDeleteId] = useState(0);
   const [searchValue, setSearchValue] = useState("");
-  console.log("rounds listing page", state);
 
   useEffect(() => {
     setRoundsData(state?.rounds);
   }, [currentViewEditId, state?.rounds]);
 
-  useEffect(() => {
-    console.log("DDDD", roundsData);
-  }, [roundsData]);
+  useEffect(() => {}, [roundsData]);
 
   useEffect(() => {
     let tempData = searchAllData(searchValue);
