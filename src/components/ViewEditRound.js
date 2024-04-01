@@ -365,7 +365,7 @@ function ViewEditRound({
               style={{ marginLeft: "5px" }}
             >
               <input
-                class="form-check-input"
+                className="form-check-input"
                 type="checkbox"
                 role="switch"
                 id="flexSwitchCheckDefault"
