@@ -25,15 +25,6 @@ I’m excited to share SpeedScore, a web application designed for speedgolf enth
   - **Match Challenges:** Enabling competitive challenges between speedgolfers.
   - **Integrated Course Booking:** Booking rounds on speedgolf-friendly courses with in-app payment capabilities.
 
-## API Integrations
-
-### Mapbox API
-I integrated the Mapbox API to allow users to map out golf courses and speedgolf running paths. These mapped paths help in calculating scientifically-based time pars.  
-*Note: To run the app locally, you will need to obtain an access token from Mapbox and add it to your environment configuration.*
-
-### Google Places API
-I also contributed to incorporating the Google Places API, which enables users to search for golf courses. Currently, the API key is embedded in the HTML, though it is recommended to restrict access to the key.
-
 ## Deployment
 
 The live version of SpeedScore is deployed and accessible via custom domains:
