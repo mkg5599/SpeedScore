@@ -1,37 +1,55 @@
 # SpeedScore
 
-This repository contains the code for SpeedScore, a single page web application that supports the sport of speedgolf by allowing users to
+I’m excited to share SpeedScore, a web application designed for speedgolf enthusiasts. As a contributor to this project, I helped build and enhance a platform that allows users to log and track their speedgolf rounds in detail while connecting with a community of like-minded speedgolfers. Developed using the MERN stack (MongoDB, Express, React, Node.js), SpeedScore integrates powerful APIs like Mapbox and Google Places to deliver a feature-rich experience. I'm working on React Native application alongside the website.
 
-- log and analyze their speedgolf rounds
-- share and discuss their speedgolf rounds with other speedgolfers
-- add detailed golf, running, and topographical data on speedgolf-friendly to SpeedScore's course database
+## Features
 
-SpeedScore is implemented in HTML, CSS, and JavaScript. It presently stores all app data locally in `localStorage`. In the future, it will also store app data in a cloud-based database.
+- **Detailed Round Logging:**  
+  I helped implement functionality that enables users to record every aspect of their speedgolf rounds, including hole-by-hole scores and times.
 
-To run SpeedScore from Visual Studio Code, type
-`npm run start`
-in the terminal.
+- **Golf Course Management:**  
+  Contributed to the development of tools for adding and managing golf courses, complete with speedgolf-specific details.
 
-# Task 1 - About Modal Testing
+- **Community Engagement:**  
+  Assisted in creating features that allow users to share rounds, follow other speedgolfers, and interact through an engaging activity feed.
 
-In this task, I reviewed the Playwright Test and installed it following the installation docs provided in the website. I installed the javascript version and also added github actions workflow. Now I reviewed the previous code in the helpers.js file and got to know how the testing was implemented before adding any user and also at the time of logging. I executed the example test case and checked how the test cases are validated using the Playwright UI mode. Now I wrote to 2 test cases in aboutModal.spec.js file to implement the About modal check. In the first one, I used html attributes to write the test cases mostly as they are in the helper.js file and evaluated them using the expect attribute whereas in second case I used playwright test case generator to record my test cases and modified that code based on my requirements. I commented out the second test case in the code. Using both the test cases, we can assure that the About modal is working perfectly or not.
+- **Buddy Requests:**  
+  Worked on the system for sending and accepting buddy requests to help build a strong speedgolf community.
 
-# Task 2 - Reimplement "Rounds" mode in React
+- **Upcoming Enhancements:**  
+  Future features I look forward to contributing include:
+  - **Live Auditory Tracking:** Real-time round tracking through an auditory interface.
+  - **Smart Tracking:** Automatic recording of rounds using advanced tracking technology.
+  - **In-App Tournament Registration:** A seamless process for registering and paying for speedgolf tournaments.
+  - **League Participation:** Tools for setting up and joining speedgolf leagues.
+  - **Match Challenges:** Enabling competitive challenges between speedgolfers.
+  - **Integrated Course Booking:** Booking rounds on speedgolf-friendly courses with in-app payment capabilities.
 
-In this task I implemented react into the application by creating the react app. Next, I developed the Rounds module (Includes Rounds Listing, Adding rounds, View/Edit rounds) in react using the html that was previously defined. Also I implemented validation on forms when adding and editing the rounds. I defined the architecture of src folder into components (which are inside pages like Add Round and View/Edit Rounds), context (A context files for every module), reducer (A reducer files for every module), screens (Listing pages of main screen) for better developer experience. All these are defined to a div element in index.js which is used in index.html file that is present in public folder.
+## API Integrations
 
-# Task 3 - Add Distance Field to a Round
+### Mapbox API
+I integrated the Mapbox API to allow users to map out golf courses and speedgolf running paths. These mapped paths help in calculating scientifically-based time pars.  
+*Note: To run the app locally, you will need to obtain an access token from Mapbox and add it to your environment configuration.*
 
-Defined a distance filed in Add and Edit pages of Rounds. Used Miles as a primary unit and it is then converted to kms based on the conversion function. Before saving the data, the distance is converted to foot unit and when accessing it in edit, it is converted to miles in useEffect. Added validation as per the requirements to display the error message.
+### Google Places API
+I also contributed to incorporating the Google Places API, which enables users to search for golf courses. Currently, the API key is embedded in the HTML, though it is recommended to restrict access to the key.
 
-# Task 4 - Support Round Sorting
+## Deployment
 
-Implemented responsive sort functionality using array-sort library and also added distance field to the listing page.
+The live version of SpeedScore is deployed and accessible via custom domains:
+- [https://speedscore.org](https://speedscore.org)
+- [https://www.speedscore.org](https://www.speedscore.org)
 
-# Task 5 - Delete Functionality
+These domains provide access to the most up-to-date version of the application.
 
-Used modal for delete functionality and updated the localstorage in parallel using reducer.
+## Contributing
 
-# Task 6 - Search Functionality
+For any questions or contribution ideas, you can also contact Chris Hundhausen at chris.hundhausen@oregonstate.edu.
 
-Used string matching on all values of rounds object to filter the data based on search key.
+## Development History
+
+SpeedScore was originally developed by Chris Hundhausen using Google Apps in 2017-18. I contributed to evolving this project into a modern MERN stack application, which is also featured in the forthcoming book *Full Stack Web Development from the Ground Up: Principles, Practices, and Technologies*.
+
+## Acknowledgements
+
+I want to extend a huge thank you to all the contributors and the speedgolf community. Your support and collaboration have been instrumental in shaping SpeedScore into the dynamic platform it is today.
